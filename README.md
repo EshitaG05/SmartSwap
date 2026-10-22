@@ -25,5 +25,5 @@ SmartSwap is a multi-attribute utility recommendation system built to eliminate 
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/EshitaG05/smart-swap.git](https://github.com/yourusername/smart-swap.git)
+   git clone [https://github.com/EshitaG05/SmartSwap]
    cd smart-swap
