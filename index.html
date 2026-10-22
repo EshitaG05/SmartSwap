@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSwap | AlternativeTo-Style SaaS Recommender</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            alt: {
+              navy: '#1e293b',
+              blue: '#0284c7',
+              sky: '#0ea5e9',
+              light: '#f1f5f9',
+              card: '#ffffff',
+              border: '#e2e8f0'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    input[type=range] { accent-color: #0284c7; }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen antialiased flex flex-col justify-between text-xs">
+
+  <!-- ================= TOP NAV BAR (AlternativeTo Style) ================= -->
+  <header class="bg-[#0f172a] text-white border-b border-slate-800 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center font-bold text-white text-sm shadow-md">⇄</div>
+          <span class="font-extrabold text-base tracking-tight text-white">smart<span class="text-sky-400">swap</span></span>
+        </a>
+        <span class="hidden md:inline-block text-[11px] text-slate-400 border-l border-slate-700 pl-3">Crowdsourced & Vector-Ranked Software Alternatives</span>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button onclick="toggleExplainMode()" id="explainToggleBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-mono text-[11px] transition">
+          <span class="w-2 h-2 rounded-full bg-slate-500" id="explainDot"></span>
+          <span>Engine Weights: <b id="explainStatus" class="font-bold text-slate-400">OFF</b></span>
+        </button>
+        <a href="/" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs transition shadow-sm">
+          Portal
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO TARGET SOFTWARE BANNER ================= -->
+  <section class="bg-white border-b border-slate-200 py-6 px-4 shadow-xs">
+    <div class="max-w-6xl mx-auto px-2 sm:px-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Software Avatar & Meta -->
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold shadow-md shadow-sky-500/20" id="toolAvatar">
+            J
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-xl font-black text-slate-900" id="heroToolName">Jira</h1>
+              <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 text-[10px] font-semibold uppercase" id="heroCategory">Project Management</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Find the best free, open-source, or cost-optimized alternatives to <span class="font-semibold text-slate-700" id="heroToolLabel">Jira</span></p>
+          </div>
+        </div>
+
+        <!-- Quick Selector Dropdown & Live Stats -->
+        <div class="flex items-center gap-3">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 px-3 text-left">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current Run-Rate</span>
+            <span class="font-mono font-bold text-amber-600 text-sm" id="heroRunRate">$77.50<span class="text-[10px] text-slate-400 font-normal">/mo</span></span>
+          </div>
+
+          <div class="min-w-[190px]">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Swap Target</label>
+            <select id="currentTool" onchange="handleToolChange()" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 shadow-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HORIZONTAL FILTER STRIP ================= -->
+  <div class="bg-white border-b border-slate-200 sticky top-14 z-20 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 overflow-x-auto">
+      
+      <!-- Semantic Search Bar -->
+      <div class="relative flex-grow max-w-md min-w-[220px]">
+        <input id="naturalQuery" type="text" placeholder="Filter by intent (e.g. fast, lightweight, kanban)..." value="lightweight, fast modern issue tracker"
+               class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-sky-500 focus:outline-none" />
+        <span class="absolute left-2.5 top-2 text-slate-400">🔍</span>
+      </div>
+
+      <!-- Compact Sliders & Controls -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <!-- Seats Slider -->
+        <div class="flex items-center space-x-2 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200">
+          <span class="text-[10px] font-bold text-slate-500 uppercase">Seats:</span>
+          <span id="teamSizeVal" class="font-mono font-bold text-sky-700 text-xs w-6">10</span>
+          <input id="teamSize" type="range" min="1" max="60" value="10" class="w-20 cursor-pointer h-1.5 bg-slate-200 rounded"
+                 oninput="document.getElementById('teamSizeVal').innerText = this.value"
+                 onchange="fetchRecommendations()">
+        </div>
+
+        <!-- Budget Slider -->
+        <div class="flex items-center space-x-2 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200">
+          <span class="text-[10px] font-bold text-slate-500 uppercase">Max:</span>
+          <span id="budgetVal" class="font-mono font-bold text-amber-700 text-xs w-12">$50/mo</span>
+          <input id="maxBudget" type="range" min="0" max="300" value="50" step="5" class="w-20 cursor-pointer h-1.5 bg-slate-200 rounded"
+                 oninput="document.getElementById('budgetVal').innerText = '$' + this.value + '/mo'"
+                 onchange="fetchRecommendations()">
+        </div>
+
+        <!-- Apply Button -->
+        <button onclick="fetchRecommendations()" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition shadow-xs">
+          Filter
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MAIN FEED LAYOUT ================= -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- LEFT: MANDATORY CAPABILITY TAGS (AlternativeTo Filter Style - 3 cols) -->
+      <aside class="lg:col-span-3 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-[11px] uppercase tracking-wider text-slate-700">Must-Have Features</span>
+          <button onclick="clearMustHaves()" class="text-[10px] text-sky-600 hover:underline font-semibold">Clear</button>
+        </div>
+
+        <div id="featuresList" class="space-y-1 max-h-[500px] overflow-y-auto pr-1">
+          <!-- Populated dynamically -->
+        </div>
+      </aside>
+
+      <!-- RIGHT: ALTERNATIVETO STYLE RECOMMENDATION FEED (9 cols) -->
+      <section class="lg:col-span-9 space-y-4">
+        
+        <div class="flex items-center justify-between px-1">
+          <span class="font-bold text-xs text-slate-600" id="resultCountLabel">Showing top matching alternatives</span>
+          <span class="text-[11px] text-slate-400 font-mono">Ranked by Vector Fit</span>
+        </div>
+
+        <div id="resultsContainer" class="space-y-4">
+          <div class="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-400 font-mono">
+            Searching for best alternatives...
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= PARITY DIFF MODAL ================= -->
+  <div id="diffModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div>
+          <h3 id="diffTitle" class="font-bold text-sm text-slate-900">Feature Parity Matrix</h3>
+          <p class="text-[11px] text-slate-500">AlternativeTo spec-by-spec comparison</p>
+        </div>
+        <button onclick="closeDiffModal()" class="w-7 h-7 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-xs font-bold transition">&times;</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto flex-grow" id="diffContent"></div>
+
+      <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <button onclick="closeDiffModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-4 text-center text-slate-400 text-[11px] font-mono border-t border-slate-200 bg-white">
+    SmartSwap • AlternativeTo-Styled SaaS Recommender & Decision Engine
+  </footer>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+    let activeRecommendations = [];
+    let showEngineMath = false;
+
+    function toggleExplainMode() {
+      showEngineMath = !showEngineMath;
+      const dot = document.getElementById("explainDot");
+      const status = document.getElementById("explainStatus");
+      if (showEngineMath) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        status.innerText = "ACTIVE";
+        status.className = "font-bold text-emerald-400";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-500";
+        status.innerText = "OFF";
+        status.className = "font-bold text-slate-400";
+      }
+      renderCards();
+    }
+
+    function clearMustHaves() {
+      document.querySelectorAll(".feature-checkbox").forEach(cb => cb.checked = false);
+      fetchRecommendations();
+    }
+
+    function handleToolChange() {
+      const selectedTool = document.getElementById("currentTool").value;
+      document.getElementById("heroToolName").innerText = selectedTool;
+      document.getElementById("heroToolLabel").innerText = selectedTool;
+      document.getElementById("toolAvatar").innerText = selectedTool.charAt(0);
+      fetchRecommendations();
+    }
+
+    async function initializeUI() {
+      try {
+        const [toolsRes, featuresRes] = await Promise.all([
+          fetch(`${API_URL}/tools`),
+          fetch(`${API_URL}/features`)
+        ]);
+
+        const toolsData = await toolsRes.json();
+        const featuresData = await featuresRes.json();
+
+        const toolSelect = document.getElementById("currentTool");
+        toolSelect.innerHTML = toolsData.tools.map(t => 
+          `<option value="${t.tool_name}">${t.tool_name} (${t.category})</option>`
+        ).join("");
+
+        const featuresContainer = document.getElementById("featuresList");
+        const defaultChecked = ["has_kanban", "has_github_integration"];
+        featuresContainer.innerHTML = featuresData.features.map(f => `
+          <label class="flex items-center space-x-2 text-[11px] text-slate-700 cursor-pointer select-none py-1 hover:bg-slate-50 px-1.5 rounded transition">
+            <input type="checkbox" value="${f.id}" ${defaultChecked.includes(f.id) ? 'checked' : ''} onchange="fetchRecommendations()" class="feature-checkbox accent-sky-600 rounded">
+            <span class="truncate">${f.label}</span>
+          </label>
+        `).join("");
+
+        handleToolChange();
+      } catch (err) {
+        console.error("Initialization error:", err);
+      }
+    }
+
+    async function fetchRecommendations() {
+      const resultsContainer = document.getElementById("resultsContainer");
+
+      const checkedFeatures = Array.from(document.querySelectorAll(".feature-checkbox:checked")).map(cb => cb.value);
+
+      const payload = {
+        current_tool: document.getElementById("currentTool").value,
+        team_size: parseInt(document.getElementById("teamSize").value),
+        max_budget_monthly: parseFloat(document.getElementById("maxBudget").value),
+        must_have_features: checkedFeatures,
+        natural_query: document.getElementById("naturalQuery").value
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/recommend`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (data.message) {
+          resultsContainer.innerHTML = `
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-900">
+              <span class="font-bold block mb-1">No Direct Candidates Found</span>
+              <p class="text-xs text-amber-800">${data.message} ${data.suggestion}</p>
+            </div>
+          `;
+          activeRecommendations = [];
+          return;
+        }
+
+        document.getElementById("heroToolName").innerText = data.current_tool;
+        document.getElementById("heroToolLabel").innerText = data.current_tool;
+        document.getElementById("heroCategory").innerText = data.current_category;
+        document.getElementById("heroRunRate").innerHTML = `${data.current_monthly_cost}<span class="text-[10px] text-slate-400 font-normal">/mo</span>`;
+        document.getElementById("resultCountLabel").innerText = `Found ${data.recommendations.length} alternatives to ${data.current_tool}`;
+
+        activeRecommendations = data.recommendations;
+        renderCards();
+
+      } catch (err) {
+        console.error("Query failed:", err);
+      }
+    }
+
+    function renderCards() {
+      const resultsContainer = document.getElementById("resultsContainer");
+      const currentToolName = document.getElementById("heroToolName").innerText;
+
+      resultsContainer.innerHTML = activeRecommendations.map((alt, idx) => `
+        <!-- ALTERNATIVETO STYLE RECOMMENDATION CARD -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md transition overflow-hidden">
+          
+          <div class="p-5 flex items-start gap-4">
+            
+            <!-- LEFT VOTE / FIT COUNTER (AlternativeTo Style) -->
+            <div class="shrink-0 flex flex-col items-center justify-center w-14 bg-slate-50 border border-slate-200 rounded-xl py-2 px-1 text-center">
+              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">MATCH</span>
+              <span class="font-black text-sm text-sky-600">${alt.match_score}%</span>
+              <span class="text-[9px] text-slate-400 mt-0.5">#${idx + 1}</span>
+            </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="flex-grow space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center space-x-2">
+                  <h3 class="text-base font-extrabold text-slate-900">${alt.tool_name}</h3>
+                  <span class="font-mono text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase ${alt.license_type === 'Open Source' ? 'border border-emerald-300 text-emerald-800 bg-emerald-50' : 'border border-slate-300 text-slate-700 bg-slate-100'}">
+                    ${alt.license_type}
+                  </span>
+                  <span class="text-[10px] px-2 py-0.5 rounded font-medium ${alt.migration_friction.level === 'Low Effort' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">
+                    ${alt.migration_friction.level}
+                  </span>
+                </div>
+
+                <!-- RIGHT CTA BUTTON -->
+                <button onclick="openDiffModal(${idx})" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-sky-500 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-800 font-semibold text-xs transition shadow-2xs">
+                  Compare vs ${currentToolName} &rarr;
+                </button>
+              </div>
+
+              <!-- Software Description -->
+              <p class="text-xs text-slate-600 leading-relaxed">${alt.description}</p>
+
+              <!-- COST OPTIMIZATION PILLS -->
+              <div class="flex flex-wrap items-center gap-3 pt-1 text-[11px] font-mono">
+                <div class="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">
+                  <span class="text-slate-400">Spend:</span> <b class="text-slate-800">${alt.monthly_cost}/mo</b>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-emerald-800">
+                  <span>Savings:</span> <b class="text-emerald-700">+${alt.annual_savings}/yr</b>
+                </div>
+              </div>
+
+              <!-- TAGS / FEATURES (AlternativeTo Pill Style) -->
+              <div class="pt-2 flex flex-wrap items-center gap-1.5">
+                <span class="text-[10px] font-bold text-slate-400 uppercase mr-1">Retained:</span>
+                ${alt.features_retained.slice(0, 6).map(f => `
+                  <span class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-default">
+                    ✓ ${f}
+                  </span>
+                `).join("")}
+                ${alt.trade_offs_lost.length > 0 ? `
+                  <span class="text-[10px] text-slate-300 mx-1">|</span>
+                  <span class="text-[10px] font-bold text-rose-400 uppercase mr-1">Missing:</span>
+                  ${alt.trade_offs_lost.slice(0, 3).map(f => `
+                    <span class="bg-rose-50 text-rose-700 border border-rose-100 px-2 py-0.5 rounded text-[11px] font-medium">
+                      ✕ ${f}
+                    </span>
+                  `).join("")}
+                ` : ''}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ENGINE MATH DRAWER (CONDITIONAL) -->
+          ${showEngineMath ? `
+            <div class="px-5 py-2.5 bg-slate-900 text-slate-300 font-mono text-[10px] border-t border-slate-800 flex items-center justify-between flex-wrap gap-2">
+              <span class="text-sky-400 font-bold uppercase tracking-wider">Engine Vector Weights:</span>
+              <div class="flex items-center space-x-4">
+                <span>Feature Match: <b class="text-white">${alt.breakdown.feature_score}%</b> <span class="text-slate-500">(${alt.breakdown.weights.features}%)</span></span>
+                <span>Semantic Intent: <b class="text-white">${alt.breakdown.semantic_score}%</b> <span class="text-slate-500">(${alt.breakdown.weights.semantic}%)</span></span>
+                <span>Cost Efficiency: <b class="text-white">${alt.breakdown.cost_score}%</b> <span class="text-slate-500">(${alt.breakdown.weights.cost}%)</span></span>
+              </div>
+            </div>
+          ` : ''}
+
+        </div>
+      `).join("");
+    }
+
+    function openDiffModal(index) {
+      const alt = activeRecommendations[index];
+      const currentToolName = document.getElementById("heroToolName").innerText;
+      document.getElementById("diffTitle").innerText = `${currentToolName} vs. ${alt.tool_name}`;
+
+      const parityKeys = Object.keys(alt.full_parity);
+
+      document.getElementById("diffContent").innerHTML = `
+        <div class="mb-4 p-3 bg-sky-50 rounded-lg border border-sky-100 text-xs">
+          <p class="font-bold text-sky-900 mb-0.5">Migration Feasibility Note:</p>
+          <p class="text-sky-800 text-[11px]">${alt.migration_friction.desc}</p>
+        </div>
+
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-200 font-mono text-[10px] text-slate-500 uppercase">
+              <th class="py-2">Capability</th>
+              <th class="py-2 text-center">${currentToolName}</th>
+              <th class="py-2 text-center text-sky-700">${alt.tool_name}</th>
+              <th class="py-2 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            ${parityKeys.map(k => {
+              const cur = alt.full_parity[k].current;
+              const cand = alt.full_parity[k].candidate;
+              let statusLabel = "";
+              if (cur && cand) statusLabel = `<span class="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-bold text-[10px]">Parity</span>`;
+              else if (!cur && cand) statusLabel = `<span class="text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded font-bold text-[10px]">Upgrade +</span>`;
+              else if (cur && !cand) statusLabel = `<span class="text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded font-bold text-[10px]">Missing -</span>`;
+              else statusLabel = `<span class="text-slate-400 text-[10px]">Neither</span>`;
+
+              return `
+                <tr>
+                  <td class="py-2 font-medium text-slate-800">${k}</td>
+                  <td class="py-2 text-center font-bold">${cur ? '<span class="text-emerald-600">✓</span>' : '<span class="text-slate-300">-</span>'}</td>
+                  <td class="py-2 text-center font-bold">${cand ? '<span class="text-emerald-600">✓</span>' : '<span class="text-slate-300">-</span>'}</td>
+                  <td class="py-2 text-right">${statusLabel}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById("diffModal").classList.remove("hidden");
+    }
+
+    function closeDiffModal() {
+      document.getElementById("diffModal").classList.add("hidden");
+    }
+
+    window.addEventListener("DOMContentLoaded", initializeUI);
+  </script>
+</body>
+</html>

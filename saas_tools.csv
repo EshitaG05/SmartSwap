@@ -1,0 +1,37 @@
+tool_name,category,license_type,base_price_user_month,min_seats,description,has_kanban,has_gantt,has_sso,has_api,has_slack_integration,has_github_integration,has_audit_logs,has_role_permissions,has_time_tracking,has_custom_dashboards,has_offline_mode,is_self_hostable
+Jira,Project Management,Commercial SaaS,7.75,10,"Enterprise issue tracking, agile boards, sprint workflows, roadmaps, and complex governance.",1,1,1,1,1,1,1,1,1,1,0,0
+Linear,Project Management,Commercial SaaS,8,1,"Opinionated, blazing-fast issue tracker built for high-performance software engineering teams.",1,0,1,1,1,1,0,1,0,1,1,0
+Trello,Project Management,Commercial SaaS,5,1,"Visual, flexible Kanban-first task organizer for small teams, lightweight boards, and non-technical users.",1,0,0,1,1,0,0,0,0,0,0,0
+Asana,Project Management,Commercial SaaS,10.99,1,"Work management platform connecting cross-functional company goals, Gantt timelines, and project portfolios.",1,1,1,1,1,1,1,1,1,1,0,0
+Plane,Project Management,Open Source,0,1,"Modern open-source, self-hostable project management tool with cycles, modules, and issue tracking.",1,0,0,1,1,1,0,1,0,1,0,1
+Taiga,Project Management,Open Source,0,1,"Open-source agile project management system supporting Scrum, Kanban, and backlog estimation.",1,0,0,1,1,1,0,1,0,0,0,1
+Redmine,Project Management,Open Source,0,1,"Classic, self-hosted open-source flexible project management web application with deep issue auditing.",1,1,0,1,0,0,1,1,1,1,0,1
+ClickUp,Project Management,Commercial SaaS,7,1,"All-in-one productivity platform with docs, goals, whiteboards, Gantt charts, and custom task views.",1,1,1,1,1,1,1,1,1,1,1,0
+Monday.com,Project Management,Commercial SaaS,9,3,"Cloud work operating system for workflows, resource management, project tracking, and executive dashboards.",1,1,1,1,1,0,1,1,1,1,0,0
+Basecamp,Project Management,Commercial SaaS,15,1,"All-in-one toolkit for remote teams featuring message boards, to-dos, automatic check-ins, and group chat.",0,0,0,1,0,0,0,0,0,0,1,0
+Height,Project Management,Commercial SaaS,6,1,"Autonomous project collaboration software with AI-assisted task workflows, spreadsheet lists, and Kanban.",1,1,0,1,1,1,0,1,0,1,0,0
+Wrike,Project Management,Commercial SaaS,9.8,2,"Enterprise-grade collaborative work platform featuring interactive Gantt charts, proofing, and workload views.",1,1,1,1,1,0,1,1,1,1,0,0
+Salesforce,CRM,Commercial SaaS,25,1,"Comprehensive enterprise sales CRM, customer lifecycle tracking, advanced pipeline automation, and analytics.",0,0,1,1,1,0,1,1,0,1,0,0
+HubSpot,CRM,Commercial SaaS,15,1,"Inbound marketing, deal pipeline tracking, contact database, email outreach, and sales pipeline management.",1,0,1,1,1,1,1,1,0,1,0,0
+Pipedrive,CRM,Commercial SaaS,14,1,"Visual sales pipeline CRM focused on activity tracking, lead management, and closing deals efficiently.",1,0,0,1,1,0,0,1,0,1,0,0
+Twenty,CRM,Open Source,0,1,"Modern open-source CRM alternative to Salesforce with clean UI, full custom objects, and graph visualization.",1,0,0,1,0,1,0,1,0,1,0,1
+SuiteCRM,CRM,Open Source,0,1,"Enterprise-ready open-source CRM with deep lead conversion, invoice generation, and modular workflows.",0,0,0,1,0,0,1,1,1,1,0,1
+Close,CRM,Commercial SaaS,49,1,"High-velocity sales CRM designed for inside sales with integrated calling, SMS, and email sequences.",1,0,1,1,1,0,0,1,0,1,0,0
+Zoho CRM,CRM,Commercial SaaS,14,1,"Scalable customer relationship manager with omnichannel support, AI forecasting, and workflow rules.",1,1,1,1,1,0,1,1,0,1,0,0
+EspoCRM,CRM,Open Source,0,1,"Lightweight open-source web CRM platform suitable for managing people, companies, projects, and opportunities.",1,0,0,1,0,0,0,1,0,1,0,1
+Folk,CRM,Commercial SaaS,18,1,"Modern contact manager and relationship builder designed for founders, talent sourcing, and creators.",1,0,0,1,0,0,0,0,0,0,0,0
+Copper,CRM,Commercial SaaS,29,1,"Google Workspace-native CRM that integrates into Gmail, Calendar, and Google Drive for zero-data-entry.",1,0,0,1,1,0,0,1,0,1,0,0
+Datadog,Monitoring,Commercial SaaS,15,1,"Enterprise cloud monitoring, application performance (APM), log aggregation, and real-time infrastructure alerts.",0,0,1,1,1,1,1,1,0,1,0,0
+New Relic,Monitoring,Commercial SaaS,0,1,"Full-stack observability platform providing application telemetry, tracing, alerts, and log visualization.",0,0,1,1,1,1,1,1,0,1,0,0
+Dynatrace,Monitoring,Commercial SaaS,58,1,Enterprise automated observability with deterministic AI root cause engine and hybrid cloud topology mapping.,0,0,1,1,1,0,1,1,0,1,0,0
+Sentry,Monitoring,Commercial SaaS,26,1,"Application performance monitoring, crash diagnostics, and error stack-trace debugging for developers.",0,0,1,1,1,1,1,1,0,1,0,0
+GlitchTip,Monitoring,Open Source,0,1,Simple open-source Sentry-compatible error tracking tool for collecting application bugs and exceptions.,0,0,0,1,0,0,0,0,0,0,0,1
+SigNoz,Monitoring,Open Source,0,1,"Open-source OpenTelemetry-native APM for distributed tracing, metrics dashboards, and log analysis.",0,0,1,1,1,1,0,1,0,1,0,1
+Prometheus,Monitoring,Open Source,0,1,Open-source systems monitoring and alerting toolkit featuring a time-series database and PromQL.,0,0,0,1,1,0,0,0,0,1,0,1
+Grafana,Monitoring,Open Source,0,1,Open-source data visualization and interactive metrics dashboard platform across multi-cloud databases.,0,0,1,1,1,1,1,1,0,1,0,1
+Zabbix,Monitoring,Open Source,0,1,"Mature open-source enterprise-class distributed monitoring solution for networks, servers, and virtual machines.",0,0,0,1,0,0,1,1,0,1,0,1
+Netdata,Monitoring,Open Source,0,1,"Real-time, high-resolution performance and health monitoring agent with automated zero-configuration anomaly detection.",0,0,0,1,1,0,0,1,0,1,0,1
+Better Stack,Monitoring,Commercial SaaS,24,1,"Modern uptime monitoring, incident response alerting, on-call schedules, and slick status pages.",0,0,1,1,1,1,0,1,0,1,0,0
+AppDynamics,Monitoring,Commercial SaaS,60,1,Cisco-owned application performance management suite targeting enterprise legacy architecture and hybrid clouds.,0,0,1,1,1,0,1,1,0,1,0,0
+Logstash,Monitoring,Open Source,0,1,"Server-side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and ships it.",0,0,0,1,0,0,0,0,0,0,0,1
+Raygun,Monitoring,Commercial SaaS,8,1,"Error monitoring, crash reporting, and real user monitoring (RUM) platform for mobile and web software teams.",0,0,1,1,1,1,0,1,0,1,0,0
